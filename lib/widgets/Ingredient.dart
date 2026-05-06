@@ -27,8 +27,10 @@ class Ingredient extends StatelessWidget {
         child: Column(
           children: [
             ClipRRect(
-              child: Image.asset(
+              child: Image.network(
                 strThumb, width: 200, height: 200, fit: BoxFit.cover,
+                errorBuilder: (_, __, ___) =>
+                  const Icon(Icons.food_bank, size: 100, color: Colors.grey),
               ),
             ),
             Text(

@@ -34,11 +34,17 @@ class MealCard extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(10),
-              child: Image.asset(
+              child: Image.network(
                 strMealThumb,
                 width: 120,
                 height: 120,
                 fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) => Container(
+                  width: 120,
+                  height: 120,
+                  color: Colors.grey[400],
+                  child: const Icon(Icons.broken_image, color: Colors.grey),
+                ),
               ),
             ),
 

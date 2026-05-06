@@ -8,9 +8,14 @@ import 'MealFromCategoryScreen.dart';
 import 'MealFromCountryScreen.dart';
 import 'MealFromIngredientScreen.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen>{
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -38,19 +43,19 @@ class HomeScreen extends StatelessWidget {
                     Container(
                       height: 200,
                       child: ListView.separated(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: 110,
-                        separatorBuilder: (context, index) => SizedBox(width: 10,),
-                        itemBuilder: (context, index) {
-                          return CountrySelected(
-                            strCountry: "Italy",
-                            strCountryThumb: "assets/italy.png",
-                            onTap: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => MealFromCountryScreen(),));
-                            },
-                            onLongPress: () {},
-                          );
-                        }
+                          scrollDirection: Axis.horizontal,
+                          itemCount: 110,
+                          separatorBuilder: (context, index) => SizedBox(width: 10,),
+                          itemBuilder: (context, index) {
+                            return CountrySelected(
+                              strCountry: "Italy",
+                              strCountryThumb: "assets/italy.png",
+                              onTap: () {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => MealFromCountryScreen(),));
+                              },
+                              onLongPress: () {},
+                            );
+                          }
                       ),
                     )
                   ],

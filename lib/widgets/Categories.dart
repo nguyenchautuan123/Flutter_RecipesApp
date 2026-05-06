@@ -25,8 +25,10 @@ class Categories extends StatelessWidget {
         child: Column(
           children: [
             ClipRRect(
-              child: Image.asset(
+              child: Image.network(
                 strCategoryThumb,width: 300, height: 200, fit: BoxFit.cover,
+                errorBuilder: (_, __, ___) =>
+                  const Icon(Icons.category, size: 100, color: Colors.grey),
               ),
             ),
             Text(
