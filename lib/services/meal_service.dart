@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import '../models/meal_model.dart';
 
 class MealService {
-  static const String API_URL = 'http://192.168.1.98/api';
+  static const String API_URL = 'http://192.168.1.98:8000/api';
 
   // Tìm kiếm món ăn
   static Future<List<Meal>> searchMeals(String query) async {
