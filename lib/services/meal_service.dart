@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import '../models/meal_model.dart';
 
 class MealService {
-  static const String API_URL = 'http://192.168.1.98:8000/api';
+  static const String API_URL = 'https://laravel-recipesapp-2.onrender.com/api';
 
   // Tìm kiếm món ăn
   static Future<List<Meal>> searchMeals(String query) async {
@@ -84,10 +84,26 @@ class MealService {
 
   // Lấy danh sách quốc gia
   static Future<List<dynamic>> getCountries() async {
-    final response = await http.get(Uri.parse('$API_URL/meals/countries'));
-    if (response.statusCode == 200) {
-      return jsonDecode(response.body)['meals'] ?? [];
+    try {
+      final response = await http.get(Uri.parse('$API_URL/meals/countries'));
+
+      if (response.statusCode == 200) {
+        final dynamic data = jsonDecode(response.body);
+
+        // Kiểm tra nếu data là Map và có chứa key 'meals'
+        if (data is Map<String, dynamic> && data.containsKey('meals')) {
+          return data['meals'] as List<dynamic>;
+        }
+        // Nếu API của bạn trả về thẳng 1 mảng
+        else if (data is List) {
+          return data;
+        }
+        return [];
+      }
+      return [];
+    } catch (e) {
+      print('❌ Lỗi getCountries: $e');
+      return [];
     }
-    throw Exception('Lỗi lấy danh sách quốc gia');
   }
 }

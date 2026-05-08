@@ -116,7 +116,7 @@ class _HomeScreenState extends State<HomeScreen>{
                             strCountry: country,
                             strCountryThumb: _getFlagUrl(country),
                             onTap: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => MealFromCountryScreen(),));
+
                             },
                             onLongPress: () {},
                           );
