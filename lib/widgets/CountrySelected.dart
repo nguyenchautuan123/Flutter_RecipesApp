@@ -28,9 +28,9 @@ class CountrySelected extends StatelessWidget{
           children: [
             ClipRRect(
               child: Image.network(
-                strCountryThumb, width: 150, height: 100, fit: BoxFit.cover,
+                strCountryThumb, width: 190, height: 110, fit: BoxFit.cover,
                 errorBuilder: (_, __, ___) =>
-                  const Icon(Icons.flag, size: 50, color: Colors.grey),
+                  const Icon(Icons.flag, size: 50, color: Colors.black),
               ),
             ),
             Text(
