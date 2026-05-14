@@ -77,7 +77,14 @@ class _MealFromCountryScreenState extends State<MealFromCountryScreen>{
               strMealThumb: meal.strMealThumb,
               strMeal: meal.strMeal,
               strCountry: widget.strCountry,
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => MealDetailScreen(idMeal: meal.idMeal), // ✅ truyền idMeal
+                  ),
+                );
+              },
               onLongPress: () {},
             );
           }

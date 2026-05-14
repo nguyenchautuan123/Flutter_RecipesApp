@@ -10,7 +10,7 @@ import 'MealDetailScreen.dart';
 class MealFromCategoryScreen extends StatefulWidget {
   final String strCategory;
 
-  const MealFromCategoryScreen({super.key, required this.strCategory});
+  const MealFromCategoryScreen({super.key, required this.strCategory,});
 
   @override
   State<MealFromCategoryScreen> createState() => _MealFromCategoryScreenState();
@@ -54,18 +54,7 @@ class _MealFromCategoryScreenState extends State<MealFromCategoryScreen>{
       ) : _error != null ? Center(
         child: Text(_error!),
       ) : _meals.isEmpty ? Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.no_meals, size: 80, color: Colors.grey[400]),
-            const SizedBox(height: 16),
-            const Text(
-              'Categoty is empty',
-              style: TextStyle(fontSize: 16, color: Colors.grey),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
+        child: Text('No meals found'),
       ) : Container(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: ListView.separated(
@@ -76,8 +65,15 @@ class _MealFromCategoryScreenState extends State<MealFromCategoryScreen>{
             return MealCard(
               strMealThumb: meal.strMealThumb,
               strMeal: meal.strMeal,
-              strCountry: widget.strCategory,
-              onTap: () {},
+              strCountry: meal.strCountry ?? '',
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => MealDetailScreen(idMeal: meal.idMeal), // ✅ truyền idMeal
+                  ),
+                );
+              },
               onLongPress: () {},
             );
           }

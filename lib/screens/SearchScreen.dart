@@ -35,7 +35,7 @@ class SearchScreen extends StatelessWidget {
                           strMeal: 'Tandoori chicken',
                           strCountry: 'India',
                           onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => const MealDetailScreen(),));
+
                           },
                           onLongPress: () {},
                       );

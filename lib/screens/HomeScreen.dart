@@ -386,7 +386,7 @@ class _HomeScreenState extends State<HomeScreen>{
                               strIngredient: ing['name']!,
                               strThumb: ing['thumb']!,
                               onTap: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => MealFromIngredientScreen(),));
+                                Navigator.push(context, MaterialPageRoute(builder: (_) => MealFromIngredientScreen(strIngredient: ing['name']!,),));
                                 },
                               onLongPress: () {}
                           );

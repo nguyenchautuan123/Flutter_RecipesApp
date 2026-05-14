@@ -2,20 +2,49 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import '../services/meal_service.dart';
+import '../models/meal_model.dart';
 
-class MealDetailScreen extends StatelessWidget {
+class MealDetailScreen extends StatefulWidget {
+  final String idMeal;
 
+  const MealDetailScreen({super.key, required this.idMeal});
 
-  const MealDetailScreen ({
-    super.key,
+  @override
+  State<MealDetailScreen> createState() => _MealDetailScreenState();
+}
 
-  });
+class _MealDetailScreenState extends State<MealDetailScreen> {
+  Meal? _meal;
+  bool _loading = true;
+  String? _error;
+
+  @override
+  void initState(){
+    super.initState();
+    _fetchMealDetail();
+  }
+
+  Future<void> _fetchMealDetail() async {
+    try{
+      final meal = await MealService.getMealDetail(widget.idMeal);
+      setState(() {
+        _meal = meal;
+        _loading = false;
+      });
+    }catch(e){
+      setState(() {
+        _error = 'Cannot load meal detail';
+        _loading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Detail'),
+        title: Text(_meal?.strMeal ?? 'Detail'),
         backgroundColor: Colors.deepOrange,
         actions: [
           PopupMenuButton(
@@ -34,17 +63,8 @@ class MealDetailScreen extends StatelessWidget {
                 value: 'AddToFavourite',
                 child: Row(
                   children: [
-                    Icon(
-                      Icons.favorite,
-                      color: Colors.black,
-                      size: 20,
-                    ),
-                    Text(
-                      'Add to favourite list',
-                      style: TextStyle(
-                        color: Colors.black ,
-                      ),
-                    ),
+                    Icon(Icons.favorite, color: Colors.black, size: 20,),
+                    Text('Add to favourite list', style: TextStyle(color: Colors.black ,),),
                   ],
                 ),
               ),
@@ -52,77 +72,117 @@ class MealDetailScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: Container(
-        width: double.infinity,
-        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        child: ListView(
-          children: [
-            Container(
-              width: double.infinity,
-              alignment: Alignment.center,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Image.asset('assets/meal-1.jpg',width: double.infinity,height: 300, fit: BoxFit.cover,),
-              ),
+      body: _loading ? Center(
+          child: CircularProgressIndicator(color: Colors.deepOrange)
+      ) : _error != null ? Center(
+          child: Text(_error!)
+      ) : _meal == null ? Center(
+          child: Text('Cannot load meal detail')
+      ) : _buildMealDetail()
+    );
+  }
+
+  Widget _buildMealDetail() {
+    final meal = _meal!;
+    return ListView(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      children: [
+        ClipRRect(
+          borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10),),
+          child: Image.network(
+            meal.strMealThumb,
+            width: double.infinity,
+            height: 300,
+            fit: BoxFit.cover,
+            errorBuilder: (_, __, ___) => Container(
+              height: 300,
+              color: Colors.grey[300],
+              child: const Icon(Icons.broken_image, size: 80, color: Colors.grey),
             ),
-            Container(
-              width: double.infinity,
-              alignment: Alignment.center,
-              child: Column(
-                children: [
-                  Text('Tandoori chicken', style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),),
-                  Text('India', style: TextStyle(fontSize: 25),)
-                ],
-              ),
-            ),
-            Divider(
-              color: Colors.grey,      // Màu sắc của đường kẻ
-              thickness: 2.0,          // Độ dày của đường kẻ (mặc định rất mỏng)
-              indent: 20.0,           // Khoảng trống bên trái (thụt vào đầu dòng)
-              endIndent: 20.0,        // Khoảng trống bên phải (thụt vào cuối dòng)
-              height: 50.0,           // Khoảng cách tổng cộng mà widget này chiếm (bao gồm cả khoảng trống trên và dưới)
-            ),
-            Container(
-              height: 330,
-              width: double.infinity,
-              child: Column(
-                children: [
-                  Text('Ingredients', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                  Expanded(
-                    child: ListView.separated(
-                      itemCount: 20,
-                      separatorBuilder: (context, index) => SizedBox(height: 10,),
-                      itemBuilder: (context, index) {
-                        return Text('Ingredient', style: TextStyle(fontSize: 18),);
-                      }
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Divider(
-              color: Colors.grey,      // Màu sắc của đường kẻ
-              thickness: 2.0,          // Độ dày của đường kẻ (mặc định rất mỏng)
-              indent: 20.0,           // Khoảng trống bên trái (thụt vào đầu dòng)
-              endIndent: 20.0,        // Khoảng trống bên phải (thụt vào cuối dòng)
-              height: 50.0,           // Khoảng cách tổng cộng mà widget này chiếm (bao gồm cả khoảng trống trên và dưới)
-            ),
-            Container(
-              width: double.infinity,
-              height: 500,
-              child: Column(
-                children: [
-                  Text('Instructions', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-                  Text(
-                    'Mix the lemon juice with the paprika and red onions in a large shallow dish. Slash each chicken thigh three times, then turn them in the juice and set aside for 10 mins. Mix all of the marinade ingredients together and pour over the chicken. Give everything a good mix, then cover and chill for at least 1 hr. This can be done up to a day in advance. Heat the grill. Lift the chicken pieces onto a rack over a baking tray. Brush over a little oil and grill for 8 mins on each side or until lightly charred and completely cooked through.',
-                    style: TextStyle(fontSize: 18),
-                  ),
-                ],
-              ),
-            ),
-          ],
+          ),
         ),
-      ),
+        const SizedBox(height: 16),
+        Center(
+          child: Column(
+            children: [
+              Text(
+                meal.strMeal,
+                style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 4),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    meal.strCountry ?? 'Unknown',
+                    style: TextStyle(fontSize: 22, color: Colors.black),
+                  ),
+                  const SizedBox(width: 10,),
+                  Icon(Icons.circle, size: 10, color: Colors.black,),
+                  const SizedBox(width: 10,),
+                  Text(
+                    meal.strCategory ?? 'Unknown',
+                    style: TextStyle(fontSize: 22, color: Colors.black),
+                  ),
+                ],
+              )
+            ],
+          ),
+        ),
+
+        const Divider(
+          color: Colors.grey,
+          thickness: 1.5,
+          indent: 20,
+          endIndent: 20,
+          height: 40,
+        ),
+
+        Text(
+          'Ingredients',
+          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold), textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: 10),
+        ListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: meal.ingredients.length,
+          itemBuilder: (context, index){
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4),
+              child: Row(
+                children: [
+                  const Icon(Icons.circle, size: 8, color: Colors.deepOrange),
+                  const SizedBox(width: 10),
+                  Text(
+                    '${meal.measures[index]}  ${meal.ingredients[index]}',
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                ],
+              ),
+            );
+          }
+        ),
+
+        const Divider(
+          color: Colors.grey,
+          thickness: 1.5,
+          indent: 20,
+          endIndent: 20,
+          height: 40,
+        ),
+
+        Text(
+          'Instructions',
+          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold), textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: 10),
+        Text(
+          meal.strInstructions ?? 'No instructions',
+          style: TextStyle(fontSize: 18),
+        ),
+      ],
     );
   }
 }

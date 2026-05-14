@@ -2,6 +2,7 @@ class Meal {
   final String idMeal;
   final String strMeal;
   final String? strArea;
+  final String? strCountry;
   final String? strCategory;
   final String strMealThumb;
   final String? strInstructions;
@@ -12,6 +13,7 @@ class Meal {
     required this.idMeal,
     required this.strMeal,
     this.strArea,
+    this.strCountry,
     this.strCategory,
     required this.strMealThumb,
     this.strInstructions,
@@ -36,6 +38,7 @@ class Meal {
         idMeal: json['idMeal'] ?? '',
         strMeal: json['strMeal'] ?? '',
         strArea: json['idArea'],
+        strCountry: json['strCountry'],
         strCategory: json['strCategory'],
         strMealThumb: json['strMealThumb'] ?? '',
         strInstructions: json['strInstructions'],
