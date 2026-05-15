@@ -46,4 +46,18 @@ class Meal {
         measures: measures,
     );
   }
+
+  Map<String, dynamic> toJson(){
+    return {
+      'idMeal' : idMeal,
+      'strMeal' : strMeal,
+      'strArea' : strArea,
+      'strCountry' : strCountry,
+      'strCategory' : strCategory,
+      'strMealThumb' : strMealThumb,
+      'strInstructions' : strInstructions,
+      'ingredients' : ingredients,
+      'measures' : measures,
+    };
+  }
 }
