@@ -2,7 +2,9 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import '../services/meal_service.dart';
+import '../services/favourite_meal_service.dart';
 import '../models/meal_model.dart';
 
 class MealDetailScreen extends StatefulWidget {
@@ -18,6 +20,7 @@ class _MealDetailScreenState extends State<MealDetailScreen> {
   Meal? _meal;
   bool _loading = true;
   String? _error;
+  bool _isFavourite = false;
 
   @override
   void initState(){
@@ -28,8 +31,10 @@ class _MealDetailScreenState extends State<MealDetailScreen> {
   Future<void> _fetchMealDetail() async {
     try{
       final meal = await MealService.getMealDetail(widget.idMeal);
+      final isFavourite = await FavouriteMealService.isFavourite(widget.idMeal);
       setState(() {
         _meal = meal;
+        _isFavourite = isFavourite;
         _loading = false;
       });
     }catch(e){
@@ -37,6 +42,33 @@ class _MealDetailScreenState extends State<MealDetailScreen> {
         _error = 'Cannot load meal detail';
         _loading = false;
       });
+    }
+  }
+
+  // ✅ Hàm thêm vào favourite
+  Future<void> _addToFavourite() async {
+    if(_meal == null){
+      return;
+    }
+
+    final success = await FavouriteMealService.addFavouriteMeal(_meal!);
+    if(success){
+      setState(() => _isFavourite = true );
+      Fluttertoast.showToast(
+        msg: 'Meal has been add to favourite list',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.grey,
+        textColor: Colors.black,
+      );
+    } else {
+      Fluttertoast.showToast(
+        msg: 'Meal has been in favourite list already',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.grey,
+        textColor: Colors.black,
+      );
     }
   }
 
@@ -51,7 +83,7 @@ class _MealDetailScreenState extends State<MealDetailScreen> {
             icon: Icon(Icons.more_vert),
             onSelected: (value){
               if(value == 'AddToFavourite'){
-
+                _addToFavourite();
               } else if( value == 'option 1'){
 
               } else if(value == 'option 2'){
@@ -63,8 +95,8 @@ class _MealDetailScreenState extends State<MealDetailScreen> {
                 value: 'AddToFavourite',
                 child: Row(
                   children: [
-                    Icon(Icons.favorite, color: Colors.black, size: 20,),
-                    Text('Add to favourite list', style: TextStyle(color: Colors.black ,),),
+                    Icon(Icons.favorite, color: _isFavourite ? Colors.deepOrange : Colors.black, size: 20,),
+                    Text(_isFavourite ? 'Favourite' : 'Add to favourite list', style: TextStyle(color: Colors.black ,),),
                   ],
                 ),
               ),

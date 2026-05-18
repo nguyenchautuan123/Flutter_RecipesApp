@@ -34,6 +34,7 @@ class Meal {
       }
     }
 
+    // ✅ Thêm toJson để lưu SharedPreferences
     return Meal(
         idMeal: json['idMeal'] ?? '',
         strMeal: json['strMeal'] ?? '',
