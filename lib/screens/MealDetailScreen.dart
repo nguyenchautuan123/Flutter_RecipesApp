@@ -47,10 +47,7 @@ class _MealDetailScreenState extends State<MealDetailScreen> {
 
   // ✅ Hàm thêm vào favourite
   Future<void> _addToFavourite() async {
-    if(_meal == null){
-      return;
-    }
-
+    if(_meal == null) { return; }
     final success = await FavouriteMealService.addFavouriteMeal(_meal!);
     if(success){
       setState(() => _isFavourite = true );

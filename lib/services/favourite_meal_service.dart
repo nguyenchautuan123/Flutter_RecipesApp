@@ -20,8 +20,8 @@ class FavouriteMealService {
 
     // Kiểm tra đã có trong danh sách chưa
     final exists = jsonList.any((e) {
-      final meal = jsonDecode(e);
-      return meal['idMeal'] == meal.idMeal;
+      final item = jsonDecode(e);
+      return item['idMeal'] == meal.idMeal;
     });
     
     if(exists){
@@ -44,8 +44,8 @@ class FavouriteMealService {
     final preferences = await SharedPreferences.getInstance();
     final jsonList = preferences.getStringList(_key) ?? [];
     return jsonList.any((e) {
-      final meal = jsonDecode(e);
-      return meal['idMeal'] == idMeal;
+      final item = jsonDecode(e);
+      return item['idMeal'] == idMeal;
     });
   }
 }

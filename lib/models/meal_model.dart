@@ -30,7 +30,7 @@ class Meal {
       final measure = json['strMeasure$i'];
       if(ingredient != null && ingredient.toString().trim().isNotEmpty){
         ingredients.add(ingredient);
-        measures.add(measure);
+        measures.add(measure ?? '');
       }
     }
 
@@ -38,7 +38,7 @@ class Meal {
     return Meal(
         idMeal: json['idMeal'] ?? '',
         strMeal: json['strMeal'] ?? '',
-        strArea: json['idArea'],
+        strArea: json['strArea'],
         strCountry: json['strCountry'],
         strCategory: json['strCategory'],
         strMealThumb: json['strMealThumb'] ?? '',
