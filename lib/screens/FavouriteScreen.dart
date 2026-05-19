@@ -29,6 +29,99 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
     });
   }
 
+  // Hiển thị Bottom Sheet
+  Future<void> _showBottomSheet(Meal meal) async {
+    showModalBottomSheet(
+      context: context,
+      constraints: BoxConstraints(
+        maxHeight: MediaQuery.of(context).size.height * 0.5,
+      ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (ctx) {
+        return Container(
+          width: double.infinity,
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 10),
+                width: 50,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: Colors.grey,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.all(10),
+                child: Text(
+                  meal.strMeal,
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              const Divider(),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      ListTile(
+                        leading: Icon(Icons.delete, color: Colors.red),
+                        title: Text('Delete', style: TextStyle(color: Colors.red),),
+                        onTap: () {
+                          Navigator.pop(ctx);
+                          _confirmDeleteMeal(meal);
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      }
+    );
+  }
+
+  // Xóa 1 món ăn
+  Future<void> _confirmDeleteMeal(Meal meal) async {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text('Delete'),
+        content: Text('Are you sure to delete "${meal.strMeal}" out of favourite list'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: Text('Cancel', style: TextStyle(color: Colors.grey),),
+          ),
+          TextButton(
+            onPressed: () async {
+              Navigator.pop(ctx);
+              await FavouriteMealService.deleteMeal(meal.idMeal);
+              setState(() {
+                _favouriteMeals.removeWhere((m) => m.idMeal == meal.idMeal);
+              });
+              Fluttertoast.showToast(
+                msg: '"${meal.strMeal}" has been deleted',
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: Colors.red,
+                textColor: Colors.white,
+              );
+            },
+            child: Text('Delete', style: TextStyle(color: Colors.red)),
+          ),
+        ],
+      )
+    );
+  }
+
   // Xác nhận trước khi xóa tất cả
   Future<void> _confirmDeleteAll() async{
     showDialog(
@@ -127,7 +220,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                   );
                   _loadFavouriteMeal(); // ✅ Reload lại sau khi quay về
                 },
-                onLongPress: () {},
+                onLongPress: () => _showBottomSheet(meal),
               );
             }
           ),

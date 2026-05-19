@@ -39,6 +39,19 @@ class FavouriteMealService {
     await prefs.remove(_key);
   }
 
+  //Xóa món ăn
+  static Future<void> deleteMeal(String idMeal) async {
+   final preferences = await SharedPreferences.getInstance();
+   final jsonList = preferences.getStringList(_key) ?? [];
+
+   jsonList.removeWhere((e) {
+     final item = jsonDecode(e);
+     return item['idMeal'] == idMeal;
+   });
+
+   await preferences.setStringList(_key, jsonList);
+  }
+
   // Kiểm tra món ăn có trong yêu thích không
   static Future<bool> isFavourite(String idMeal) async {
     final preferences = await SharedPreferences.getInstance();
