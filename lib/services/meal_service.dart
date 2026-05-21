@@ -106,4 +106,23 @@ class MealService {
       return [];
     }
   }
+
+  // Hàm ramdom meal
+  static Future<List<Meal>> getRamdomMeals({int count = 10}) async {
+    List<Meal> meals = [];
+    for(int i = 0; i < count; i++){
+      try{
+        final response = await http.get(Uri.parse('$API_URL/meals/random'));
+        if(response.statusCode == 200){
+          final data = jsonDecode(response.body)['meals'];
+          if(data != null && data.isNotEmpty){
+            meals.add(Meal.fromJson(data[0]));
+          }
+        }
+      }catch(e){
+        continue;
+      }
+    }
+    return meals;
+  }
 }
