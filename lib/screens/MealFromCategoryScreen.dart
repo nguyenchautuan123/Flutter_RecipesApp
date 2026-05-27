@@ -47,7 +47,17 @@ class _MealFromCategoryScreenState extends State<MealFromCategoryScreen>{
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.strCategory),
-        backgroundColor: Colors.deepOrange,
+        backgroundColor: Colors.transparent,
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Colors.deepOrange,
+                Colors.yellow,
+              ]
+            )
+          ),
+        ),
       ),
       body: _loading ? Center(
         child: CircularProgressIndicator(color: Colors.deepOrange,),

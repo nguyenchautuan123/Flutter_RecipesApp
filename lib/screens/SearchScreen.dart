@@ -75,7 +75,17 @@ class _SearchScreenState extends State<SearchScreen> {
       home: Scaffold(
         appBar: AppBar(
           title: Text('Search'),
-          backgroundColor: Colors.deepOrange,
+          backgroundColor: Colors.transparent,
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.deepOrange,
+                  Colors.yellow,
+                ]
+              )
+            ),
+          ),
         ),
         body: Container(
           width: double.infinity,

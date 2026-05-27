@@ -74,7 +74,17 @@ class _MealDetailScreenState extends State<MealDetailScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(_meal?.strMeal ?? 'Detail'),
-        backgroundColor: Colors.deepOrange,
+        backgroundColor: Colors.transparent,
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Colors.deepOrange,
+                Colors.yellow,
+              ]
+            )
+          ),
+        ),
         actions: [
           PopupMenuButton(
             icon: Icon(Icons.more_vert),

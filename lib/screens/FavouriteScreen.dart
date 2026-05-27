@@ -161,7 +161,17 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
       home: Scaffold(
         appBar: AppBar(
           title: Text('Favourite'),
-          backgroundColor: Colors.deepOrange,
+          backgroundColor: Colors.transparent,
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.deepOrange,
+                  Colors.yellow,
+                ]
+              )
+            ),
+          ),
           actions: [
             PopupMenuButton(
                 icon: Icon(Icons.more_vert),

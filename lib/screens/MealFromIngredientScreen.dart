@@ -46,7 +46,17 @@ class _MealFromIngredientScreen extends State<MealFromIngredientScreen>{
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.strIngredient),
-        backgroundColor: Colors.deepOrange,
+        backgroundColor: Colors.transparent,
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Colors.deepOrange,
+                Colors.yellow,
+              ]
+            )
+          ),
+        ),
       ),
       body: _loading ? Center(
         child: CircularProgressIndicator(color: Colors.deepOrange,),

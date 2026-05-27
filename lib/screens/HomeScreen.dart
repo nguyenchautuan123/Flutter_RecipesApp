@@ -291,7 +291,17 @@ class _HomeScreenState extends State<HomeScreen>{
       home: Scaffold(
         appBar: AppBar(
           title: Text('Home'),
-          backgroundColor: Colors.deepOrange,
+          backgroundColor: Colors.transparent,
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.deepOrange,
+                  Colors.yellow,
+                ]
+              )
+            ),
+          ),
         ),
         body: Container(
           child: ListView(
